@@ -24,7 +24,7 @@ namespace TaskSystem.Repository
 
             if (userGetById == null)
             {
-                throw new Exception($"User with ID: {id} could be found on Database");
+                throw new Exception($"User with ID: {id} could not be found in the dataBase");
             }
 
             return userGetById;

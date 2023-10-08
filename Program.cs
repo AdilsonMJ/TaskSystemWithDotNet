@@ -25,6 +25,7 @@ namespace TaskSystem
 
 
             builder.Services.AddScoped<IUserRespository, UserRepository>();
+            builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
 
 

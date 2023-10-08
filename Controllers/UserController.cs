@@ -32,7 +32,7 @@ namespace TaskSystem.Controllers
             return Ok(userModel);
         }
 
-        [HttpPost("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<UserModel>> UpdateUser([FromBody] UserModel userModel, int id)
         {
             userModel.Id = id;
