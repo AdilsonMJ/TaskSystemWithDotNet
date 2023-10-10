@@ -9,20 +9,26 @@ namespace TaskSystem.Repository
     {
 
         private readonly TaskSystemDBContext _dbContext;
-        public TaskRepository(TaskSystemDBContext taskSystemDbContext)
+        public TaskRepository(TaskSystemDBContext taskSystemDbContext )
         {
             _dbContext = taskSystemDbContext;
         }
 
         public async Task<List<TaskModel>> GetAllTasks()
         {
-            return await _dbContext.Tasks.ToListAsync();
+            return await _dbContext.Tasks
+                .Include(x => x.User)
+                .ToListAsync();
         }
 
 
         public async Task<TaskModel> GetTaskById(int id)
         {
-            TaskModel? taskGetById = await _dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
+            TaskModel? taskGetById = await _dbContext.Tasks
+                .Include(x => x.User)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+
             if(taskGetById == null)
             {
                 throw new Exception($"User with ID: {id} could not be found in the dataBase");
@@ -38,7 +44,6 @@ namespace TaskSystem.Repository
             taskModelGetById.Name = task.Name;
             taskModelGetById.Status = task.Status;
             taskModelGetById.Description = task.Description;
-            taskModelGetById.User = task.User;
             taskModelGetById.UserId = task.UserId;
 
             _dbContext.Tasks.Update(taskModelGetById);
@@ -50,8 +55,6 @@ namespace TaskSystem.Repository
 
         public async Task<TaskModel> AddNewTask(TaskModel task)
         {
-
-
             await _dbContext.Tasks.AddAsync(task);
             await _dbContext.SaveChangesAsync();
 
@@ -67,5 +70,6 @@ namespace TaskSystem.Repository
 
             return true;
         }
+
     }
 }

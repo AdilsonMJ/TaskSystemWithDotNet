@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskSystem.Data;
@@ -11,9 +12,11 @@ using TaskSystem.Data;
 namespace TaskSystem.Migrations
 {
     [DbContext(typeof(TaskSystemDBContext))]
-    partial class TaskSystemDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231008195711_BindingUserWithTask")]
+    partial class BindingUserWithTask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,8 +53,7 @@ namespace TaskSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.HasIndex("UserModelId");
 
@@ -84,11 +86,11 @@ namespace TaskSystem.Migrations
             modelBuilder.Entity("TaskSystem.Models.TaskModel", b =>
                 {
                     b.HasOne("TaskSystem.Models.UserModel", "User")
-                        .WithOne()
-                        .HasForeignKey("TaskSystem.Models.TaskModel", "UserId");
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.HasOne("TaskSystem.Models.UserModel", null)
-                        .WithMany("tasks")
+                        .WithMany("task")
                         .HasForeignKey("UserModelId");
 
                     b.Navigation("User");
@@ -96,7 +98,7 @@ namespace TaskSystem.Migrations
 
             modelBuilder.Entity("TaskSystem.Models.UserModel", b =>
                 {
-                    b.Navigation("tasks");
+                    b.Navigation("task");
                 });
 #pragma warning restore 612, 618
         }

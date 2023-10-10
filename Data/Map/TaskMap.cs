@@ -13,9 +13,7 @@ namespace TaskSystem.Data.Map
             builder.Property(x => x.Description).HasMaxLength(250);
             builder.Property(x => x.Status).IsRequired();
             builder.Property(x => x.UserId);
-
-            builder.HasOne(x => x.User);
-
+            builder.HasOne(x => x.User).WithOne().HasForeignKey<TaskModel>(x => x.UserId);
         }
     }
 }

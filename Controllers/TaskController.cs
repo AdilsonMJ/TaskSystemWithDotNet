@@ -16,6 +16,7 @@ namespace TaskSystem.Controllers
         public TaskController(ITaskRepository taskRepository)
         {
             _taskRepository = taskRepository;
+          
         }
 
 
@@ -26,12 +27,31 @@ namespace TaskSystem.Controllers
             return Ok(taskList);
         }
 
+
+        [HttpGet ("{id}")]
+        public async Task<ActionResult< TaskModel>> GetTaskByID(int id)
+        {
+            TaskModel task = await _taskRepository.GetTaskById(id);
+
+            return Ok(task);
+        }
+
         [HttpPost]
         public async Task<ActionResult<TaskModel>> AddNewTask([FromBody] TaskModel task)
         {
+
             await _taskRepository.AddNewTask(task);
 
             return Ok(task);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<TaskModel>> UpdateTask([FromBody] TaskModel task, int id)
+        {
+            task.Id = id;
+            TaskModel taskmodel = await _taskRepository.UpdateTask(task, id);
+
+            return Ok(taskmodel);
         }
 
         [HttpDelete("{id}")]
