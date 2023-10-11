@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using TaskSystem.Data;
 using TaskSystem.Repository;
 using TaskSystem.Repository.Interface;
@@ -13,7 +14,8 @@ namespace TaskSystem
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; });
             
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

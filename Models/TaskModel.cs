@@ -8,7 +8,6 @@
 
         public TaskStatus Status { get; set; }
 
-
         public int? UserId { get; set; }
         public virtual UserModel? User { get; set; }
     }
